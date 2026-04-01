@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hano coffee — Cookie Recipe</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EF;
+    --brown: #3A1F10;
+    --brown-mid: #7A3E1E;
+    --gold: #B86030;
+    --gold-light: #E0B898;
+    --warm-gray: #8C6B55;
+    --line: #D9C0AA;
+    --bg-section: #F0E4D8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--brown);
+    padding: 28px 48px;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  header .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    color: var(--gold-light);
+  }
+
+  header .slash { color: var(--gold); font-size: 18px; }
+
+  header .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 40px 80px;
+  }
+
+  .recipe-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    background: transparent;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--warm-gray);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  .nav-btn.active {
+    background: var(--brown);
+    color: var(--gold-light);
+    border-color: var(--brown);
+  }
+
+  .nav-btn:hover:not(.active) {
+    background: var(--bg-section);
+    color: var(--brown);
+  }
+
+  .recipe-header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .recipe-no {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .recipe-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--brown);
+  }
+
+  .recipe-title-ja {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--warm-gray);
+    margin-top: 6px;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .recipe-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .meta-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--brown);
+    letter-spacing: 0.06em;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .ingredients-section { margin-bottom: 52px; }
+
+  /* グループラベル */
+  .ingredient-group-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--warm-gray);
+    font-family: 'Cormorant Garamond', serif;
+    text-transform: uppercase;
+    padding: 10px 0 6px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0;
+  }
+
+  .ingredients-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+  }
+
+  .ingredients-table thead th {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    padding: 0 0 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ingredients-table thead th:not(:first-child) { text-align: right; }
+
+  .ingredients-table tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+
+  .ingredients-table tbody tr:hover { background: var(--bg-section); }
+
+  .ingredients-table tbody td {
+    padding: 14px 0;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  .ingredients-table tbody td:not(:first-child) {
+    text-align: right;
+    color: var(--brown-mid);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+  }
+
+  .ingredients-table tbody td.unit {
+    color: var(--warm-gray);
+    font-size: 13px;
+    padding-left: 6px;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .steps-section { margin-bottom: 52px; }
+
+  .step-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    border-bottom: 1px solid var(--line);
+    padding: 22px 0;
+    transition: background 0.15s;
+  }
+
+  .step-item:hover {
+    background: var(--bg-section);
+    margin: 0 -16px;
+    padding: 22px 16px;
+    border-radius: 2px;
+  }
+
+  .step-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .step-text {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+    color: var(--brown);
+    padding-top: 4px;
+  }
+
+  .memo-section {
+    background: var(--bg-section);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .memo-section .section-title { margin-bottom: 16px; }
+
+  .memo-content {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    color: var(--brown-mid);
+  }
+
+  /* ベースレシピバッジ */
+  .base-badge {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    border: 1px solid var(--line);
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+  }
+
+  footer .footer-note {
+    font-size: 11px;
+    color: var(--line);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 24px; }
+    .container { padding: 36px 24px 60px; }
+    .recipe-header { flex-direction: column; }
+    .recipe-meta { text-align: left; flex-direction: row; flex-wrap: wrap; }
+    .meta-item { align-items: flex-start; }
+    footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">hano coffee</span>
+  <span class="slash">/</span>
+  <span class="page-title">Cookie Recipe</span>
+</header>
+
+<div class="container">
+
+  <nav class="recipe-nav">
+    <button class="nav-btn active" onclick="showRecipe('smores', this)">スモアクッキー</button>
+  </nav>
+
+  <!-- スモアクッキー -->
+  <div id="recipe-smores">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Cookie No. 01</div>
+        <div class="recipe-title">S'mores Cookie</div>
+        <div class="recipe-title-ja">スモアクッキー</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">8枚</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Temp</span>
+          <span class="meta-value">180℃</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Time</span>
+          <span class="meta-value">18分</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+
+      <div class="ingredient-group-label">液体</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>米油</td><td>75</td><td class="unit">g</td></tr>
+          <tr><td>牛乳</td><td>60</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">甘味・塩</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>きび糖</td><td>135</td><td class="unit">g</td></tr>
+          <tr><td>塩</td><td>1.5</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">粉類</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>ドルチェ（薄力粉）</td><td>210</td><td class="unit">g</td></tr>
+          <tr><td>ベーキングパウダー</td><td>3</td><td class="unit">g</td></tr>
+          <tr><td>ココアパウダー</td><td>12.5</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">mix-in / トッピング</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>チョコチップ</td><td>45</td><td class="unit">g</td></tr>
+          <tr><td>マシュマロ</td><td>8</td><td class="unit">個（1枚に1個）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">オーブンを180℃に予熱する</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">米油と牛乳を混ぜる</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">きび糖・ココアパウダー・塩を加えて混ぜる</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">ドルチェ・ベーキングパウダー・チョコチップを加え、手袋をつけて手で混ぜる</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">クッキングシートを敷いた天板に、生地を全量÷8（約68g）ずつ千鳥配置で並べる</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">マシュマロを1個ずつ中に包んで丸める</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">180℃のオーブンで18分焼く</div></div>
+    </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content" style="margin-bottom: 20px;">
+        天板には千鳥配置で並べること（熱が均一に回る）
+      </div>
+      <!-- 配置イラスト -->
+      <svg width="100%" viewBox="0 0 480 300" style="display:block; margin-top: 12px;">
+        <text font-family="'Noto Serif JP', serif" font-size="11" fill="var(--warm-gray)" letter-spacing="2" x="16" y="18">天板への並べ方</text>
+        <!-- 奇数段：x=90, 310　y=65, 195 -->
+        <circle cx="90"  cy="70"  r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <circle cx="310" cy="70"  r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <circle cx="90"  cy="210" r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <circle cx="310" cy="210" r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <!-- 偶数段：x=200, 420　y=140, 280（中間にはさむ） -->
+        <circle cx="200" cy="140" r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <circle cx="420" cy="140" r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <circle cx="200" cy="280" r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <circle cx="420" cy="280" r="38" fill="var(--bg-section)" stroke="var(--gold)" stroke-width="1.5"/>
+        <!-- チョコチップ -->
+        <circle cx="76"  cy="62"  r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="100" cy="76"  r="2" fill="var(--gold)" opacity="0.35"/>
+        <circle cx="296" cy="62"  r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="320" cy="76"  r="2" fill="var(--gold)" opacity="0.35"/>
+        <circle cx="186" cy="132" r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="210" cy="146" r="2" fill="var(--gold)" opacity="0.35"/>
+        <circle cx="406" cy="132" r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="430" cy="146" r="2" fill="var(--gold)" opacity="0.35"/>
+        <circle cx="76"  cy="202" r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="100" cy="216" r="2" fill="var(--gold)" opacity="0.35"/>
+        <circle cx="296" cy="202" r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="320" cy="216" r="2" fill="var(--gold)" opacity="0.35"/>
+        <circle cx="186" cy="272" r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="210" cy="286" r="2" fill="var(--gold)" opacity="0.35"/>
+        <circle cx="406" cy="272" r="3" fill="var(--gold)" opacity="0.45"/>
+        <circle cx="430" cy="286" r="2" fill="var(--gold)" opacity="0.35"/>
+      </svg>
+    </div>
+
+  </div><!-- /recipe-smores -->
+
+  <script>
+    function showRecipe(id, btn) {
+      document.querySelectorAll('[id^="recipe-"]').forEach(el => el.style.display = 'none');
+      document.getElementById('recipe-' + id).style.display = 'block';
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</div>
+
+<footer>
+  <span class="footer-logo">hano coffee</span>
+  <span class="footer-note">Internal Use Only</span>
+</footer>
+
+</body>
+</html>

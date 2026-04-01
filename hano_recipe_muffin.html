@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hano coffee — Muffin Recipe</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F2F6F6;
+    --brown: #1A3535;
+    --brown-mid: #2E6060;
+    --gold: #5A9E9E;
+    --gold-light: #B0D5D5;
+    --warm-gray: #6B8C8C;
+    --line: #BAD4D4;
+    --bg-section: #E3F0F0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--brown);
+    padding: 28px 48px;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  header .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    color: var(--gold-light);
+  }
+
+  header .slash { color: var(--gold); font-size: 18px; }
+
+  header .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 40px 80px;
+  }
+
+  .recipe-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    background: transparent;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--warm-gray);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  .nav-btn.active {
+    background: var(--brown);
+    color: var(--gold-light);
+    border-color: var(--brown);
+  }
+
+  .nav-btn:hover:not(.active) {
+    background: var(--bg-section);
+    color: var(--brown);
+  }
+
+  .recipe-header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .recipe-no {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .recipe-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--brown);
+  }
+
+  .recipe-title-ja {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--warm-gray);
+    margin-top: 6px;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .recipe-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .meta-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--brown);
+    letter-spacing: 0.06em;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .ingredients-section { margin-bottom: 52px; }
+
+  /* グループラベル */
+  .ingredient-group-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--warm-gray);
+    font-family: 'Cormorant Garamond', serif;
+    text-transform: uppercase;
+    padding: 10px 0 6px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0;
+  }
+
+  .ingredients-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+  }
+
+  .ingredients-table thead th {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    padding: 0 0 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ingredients-table thead th:not(:first-child) { text-align: right; }
+
+  .ingredients-table tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+
+  .ingredients-table tbody tr:hover { background: var(--bg-section); }
+
+  .ingredients-table tbody td {
+    padding: 14px 0;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  .ingredients-table tbody td:not(:first-child) {
+    text-align: right;
+    color: var(--brown-mid);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+  }
+
+  .ingredients-table tbody td.unit {
+    color: var(--warm-gray);
+    font-size: 13px;
+    padding-left: 6px;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .steps-section { margin-bottom: 52px; }
+
+  .step-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    border-bottom: 1px solid var(--line);
+    padding: 22px 0;
+    transition: background 0.15s;
+  }
+
+  .step-item:hover {
+    background: var(--bg-section);
+    margin: 0 -16px;
+    padding: 22px 16px;
+    border-radius: 2px;
+  }
+
+  .step-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .step-text {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+    color: var(--brown);
+    padding-top: 4px;
+  }
+
+  .memo-section {
+    background: var(--bg-section);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .memo-section .section-title { margin-bottom: 16px; }
+
+  .memo-content {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    color: var(--brown-mid);
+  }
+
+  /* ベースレシピバッジ */
+  .base-badge {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    border: 1px solid var(--line);
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-top: 8px;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+  }
+
+  footer .footer-note {
+    font-size: 11px;
+    color: var(--line);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 24px; }
+    .container { padding: 36px 24px 60px; }
+    .recipe-header { flex-direction: column; }
+    .recipe-meta { text-align: left; flex-direction: row; flex-wrap: wrap; }
+    .meta-item { align-items: flex-start; }
+    footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">hano coffee</span>
+  <span class="slash">/</span>
+  <span class="page-title">Muffin Recipe</span>
+</header>
+
+<div class="container">
+
+  <nav class="recipe-nav">
+    <button class="nav-btn active" onclick="showRecipe('base', this)">Base</button>
+    <button class="nav-btn" onclick="showRecipe('double-choco', this)">ダブルチョコ</button>
+    <button class="nav-btn" onclick="showRecipe('orange-choco', this)">オランジュショコラ</button>
+    <button class="nav-btn" onclick="showRecipe('coffee-oreo', this)">コーヒーオレオ</button>
+  </nav>
+
+  <!-- ベースレシピ -->
+  <div id="recipe-base">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Muffin Base</div>
+        <div class="recipe-title">Plain Muffin</div>
+        <div class="recipe-title-ja">マフィン ベースレシピ</div>
+        <span class="base-badge">Internal / Not on Menu</span>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">6個</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Temp</span>
+          <span class="meta-value">170℃</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Time</span>
+          <span class="meta-value">20分</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 材料 -->
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+
+      <div class="ingredient-group-label">粉類</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>ドルチェ（薄力粉）</td><td>100</td><td class="unit">g</td></tr>
+          <tr><td>ベーキングパウダー</td><td>3</td><td class="unit">g</td></tr>
+          <tr><td>塩</td><td>0.5</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">卵・油脂・甘味</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>全卵</td><td>1</td><td class="unit">玉</td></tr>
+          <tr><td>きび糖</td><td>60</td><td class="unit">g</td></tr>
+          <tr><td>無塩バター（溶かす）</td><td>30</td><td class="unit">g</td></tr>
+          <tr><td>米油</td><td>20</td><td class="unit">g</td></tr>
+          <tr><td>牛乳</td><td>70</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 手順 -->
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">無塩バター30gをレンジで溶かす</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">オーブンを170℃に予熱する</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">粉類（ドルチェ・ベーキングパウダー・塩）を合わせて混ぜておく</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">卵・きび糖・溶かしバター・米油を混ぜる（牛乳はまだ入れない）</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">牛乳を加えて混ぜる（先に入れると分離するため）</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">液体に粉類を加え、ホイッパーでよく混ぜる</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">6個型に均等に流し込む</div></div>
+      <div class="step-item"><div class="step-number">08</div><div class="step-text">170℃のオーブンで20分焼く</div></div>
+    </div>
+
+    <!-- メモ -->
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        牛乳は最後に加えること（分離防止）
+      </div>
+    </div>
+
+  </div><!-- /recipe-base -->
+
+  <!-- ダブルチョコマフィン -->
+  <div id="recipe-double-choco" style="display:none;">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Muffin No. 01</div>
+        <div class="recipe-title">Double Chocolate</div>
+        <div class="recipe-title-ja">ダブルチョコマフィン</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">6個</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Temp</span>
+          <span class="meta-value">170℃</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Time</span>
+          <span class="meta-value">20分</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+
+      <div class="ingredient-group-label">粉類</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>ドルチェ（薄力粉）</td><td>95</td><td class="unit">g</td></tr>
+          <tr><td>ベーキングパウダー</td><td>3</td><td class="unit">g</td></tr>
+          <tr><td>塩</td><td>0.5</td><td class="unit">g</td></tr>
+          <tr><td>ココア</td><td>10</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">卵・油脂・甘味</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>全卵</td><td>1</td><td class="unit">玉</td></tr>
+          <tr><td>きび糖</td><td>60</td><td class="unit">g</td></tr>
+          <tr><td>無塩バター（溶かす）</td><td>30</td><td class="unit">g</td></tr>
+          <tr><td>米油</td><td>20</td><td class="unit">g</td></tr>
+          <tr><td>牛乳</td><td>70</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">mix-in</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>チョコチップ</td><td>40</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">無塩バター30gをレンジで溶かす</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">オーブンを170℃に予熱する</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">粉類（ドルチェ・ベーキングパウダー・塩・ココア）を合わせて混ぜておく</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">卵・きび糖・溶かしバター・米油を混ぜる（牛乳はまだ入れない）</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">牛乳を加えて混ぜる（先に入れると分離するため）</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">液体に粉類とチョコチップを加え、ホイッパーでよく混ぜる</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">6個型に均等に流し込む</div></div>
+      <div class="step-item"><div class="step-number">08</div><div class="step-text">170℃のオーブンで20分焼く</div></div>
+    </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        牛乳は最後に加えること（分離防止）
+      </div>
+    </div>
+
+  </div><!-- /recipe-double-choco -->
+
+  <!-- オランジュショコラマフィン -->
+  <div id="recipe-orange-choco" style="display:none;">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Muffin No. 02</div>
+        <div class="recipe-title">Orange Chocolat</div>
+        <div class="recipe-title-ja">オランジュショコラマフィン</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">6個</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Temp</span>
+          <span class="meta-value">170℃</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Time</span>
+          <span class="meta-value">20分</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+
+      <div class="ingredient-group-label">粉類</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>ドルチェ（薄力粉）</td><td>100</td><td class="unit">g</td></tr>
+          <tr><td>ベーキングパウダー</td><td>3</td><td class="unit">g</td></tr>
+          <tr><td>塩</td><td>0.5</td><td class="unit">g</td></tr>
+          <tr><td>ココア</td><td>8</td><td class="unit">g</td></tr>
+          <tr><td>カルダモン</td><td>0.5</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">卵・油脂・甘味</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>全卵</td><td>1</td><td class="unit">玉</td></tr>
+          <tr><td>きび糖</td><td>60</td><td class="unit">g</td></tr>
+          <tr><td>無塩バター（溶かす）</td><td>30</td><td class="unit">g</td></tr>
+          <tr><td>米油</td><td>20</td><td class="unit">g</td></tr>
+          <tr><td>牛乳</td><td>70</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">mix-in</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>チョコチップ</td><td>30</td><td class="unit">g</td></tr>
+          <tr><td>オレンジピール（角切り）</td><td>50</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">無塩バター30gをレンジで溶かす</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">オーブンを170℃に予熱する</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">粉類（ドルチェ・ベーキングパウダー・塩・ココア・カルダモン）を合わせて混ぜておく</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">卵・きび糖・溶かしバター・米油を混ぜる（牛乳はまだ入れない）</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">牛乳を加えて混ぜる（先に入れると分離するため）</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">液体に粉類・チョコチップ・オレンジピールを加え、ホイッパーでよく混ぜる</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">6個型に均等に流し込む</div></div>
+      <div class="step-item"><div class="step-number">08</div><div class="step-text">170℃のオーブンで20分焼く</div></div>
+    </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        牛乳は最後に加えること（分離防止）
+      </div>
+    </div>
+
+  </div><!-- /recipe-orange-choco -->
+
+  <!-- コーヒーオレオマフィン -->
+  <div id="recipe-coffee-oreo" style="display:none;">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Muffin No. 03</div>
+        <div class="recipe-title">Coffee Oreo</div>
+        <div class="recipe-title-ja">コーヒーオレオマフィン</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">6個</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Temp</span>
+          <span class="meta-value">170℃</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Time</span>
+          <span class="meta-value">20分</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+
+      <div class="ingredient-group-label">粉類</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>ドルチェ（薄力粉）</td><td>100</td><td class="unit">g</td></tr>
+          <tr><td>ベーキングパウダー</td><td>3</td><td class="unit">g</td></tr>
+          <tr><td>塩</td><td>0.5</td><td class="unit">g</td></tr>
+          <tr><td>エスプレッソ粉末</td><td>6</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">卵・油脂・甘味</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>全卵</td><td>1</td><td class="unit">玉</td></tr>
+          <tr><td>きび糖</td><td>60</td><td class="unit">g</td></tr>
+          <tr><td>無塩バター（溶かす）</td><td>30</td><td class="unit">g</td></tr>
+          <tr><td>米油</td><td>20</td><td class="unit">g</td></tr>
+          <tr><td>牛乳</td><td>70</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">トッピング</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>オレオ（砕く）</td><td>6</td><td class="unit">枚</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">無塩バター30gをレンジで溶かす</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">オーブンを170℃に予熱する</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">粉類（ドルチェ・ベーキングパウダー・塩・エスプレッソ粉末）を合わせて混ぜておく</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">卵・きび糖・溶かしバター・米油を混ぜる（牛乳はまだ入れない）</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">牛乳を加えて混ぜる（先に入れると分離するため）</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">液体に粉類を加え、ホイッパーでよく混ぜる</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">6個型に均等に流し込む</div></div>
+      <div class="step-item"><div class="step-number">08</div><div class="step-text">砕いたオレオを上にのせる</div></div>
+      <div class="step-item"><div class="step-number">09</div><div class="step-text">170℃のオーブンで20分焼く</div></div>
+    </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        牛乳は最後に加えること（分離防止）
+      </div>
+    </div>
+
+  </div><!-- /recipe-coffee-oreo -->
+
+  <script>
+    function showRecipe(id, btn) {
+      document.querySelectorAll('[id^="recipe-"]').forEach(el => el.style.display = 'none');
+      document.getElementById('recipe-' + id).style.display = 'block';
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</div>
+
+<footer>
+  <span class="footer-logo">hano coffee</span>
+  <span class="footer-note">Internal Use Only</span>
+</footer>
+
+</body>
+</html>

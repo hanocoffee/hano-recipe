@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hano coffee — Recipe</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --brown: #3D2314;
+    --brown-mid: #7A4828;
+    --gold: #C49A5A;
+    --gold-light: #E8D5B0;
+    --warm-gray: #8C7B6B;
+    --line: #D9CCBA;
+    --bg-section: #F3EDE3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+  }
+
+  /* ヘッダー */
+  header {
+    background: var(--brown);
+    padding: 28px 48px;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  header .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    color: var(--gold-light);
+  }
+
+  header .slash {
+    color: var(--gold);
+    font-size: 18px;
+  }
+
+  header .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+  }
+
+  /* メインレイアウト */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 40px 80px;
+  }
+
+  /* レシピヘッダー */
+  .recipe-header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .recipe-no {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .recipe-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    color: var(--brown);
+  }
+
+  .recipe-title-ja {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--warm-gray);
+    margin-top: 6px;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  .recipe-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .meta-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--brown);
+    letter-spacing: 0.06em;
+  }
+
+  /* セクションタイトル */
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* 材料テーブル */
+  .ingredients-section {
+    margin-bottom: 52px;
+  }
+
+  .ingredients-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ingredients-table thead th {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    padding: 0 0 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ingredients-table thead th:not(:first-child) {
+    text-align: right;
+  }
+
+  .ingredients-table tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s;
+  }
+
+  .ingredients-table tbody tr:hover {
+    background: var(--bg-section);
+  }
+
+  .ingredients-table tbody td {
+    padding: 14px 0;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  .ingredients-table tbody td:not(:first-child) {
+    text-align: right;
+    color: var(--brown-mid);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+  }
+
+  .ingredients-table tbody td.unit {
+    color: var(--warm-gray);
+    font-size: 13px;
+    padding-left: 6px;
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  /* 手順 */
+  .steps-section {
+    margin-bottom: 52px;
+  }
+
+  .step-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 22px 0;
+    transition: background 0.15s;
+  }
+
+  .step-item:hover {
+    background: var(--bg-section);
+    margin: 0 -16px;
+    padding: 22px 16px;
+    border-radius: 2px;
+  }
+
+  .step-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .step-text {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+    color: var(--brown);
+    padding-top: 4px;
+  }
+
+  /* メモ欄 */
+  .memo-section {
+    background: var(--bg-section);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .memo-section .section-title {
+    margin-bottom: 16px;
+  }
+
+  .memo-content {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    color: var(--brown-mid);
+  }
+
+  /* ナビゲーション */
+  .recipe-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    background: transparent;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--warm-gray);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  .nav-btn.active {
+    background: var(--brown);
+    color: var(--gold-light);
+    border-color: var(--brown);
+  }
+
+  .nav-btn:hover:not(.active) {
+    background: var(--bg-section);
+    color: var(--brown);
+  }
+
+  /* フッター */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+  }
+
+  footer .footer-note {
+    font-size: 11px;
+    color: var(--line);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 24px; }
+    .container { padding: 36px 24px 60px; }
+    .recipe-header { flex-direction: column; }
+    .recipe-meta { text-align: left; flex-direction: row; flex-wrap: wrap; }
+    .meta-item { align-items: flex-start; }
+    footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">hano coffee</span>
+  <span class="slash">/</span>
+  <span class="page-title">Recipe Management</span>
+</header>
+
+<div class="container">
+
+  <!-- レシピナビ -->
+  <nav class="recipe-nav">
+    <button class="nav-btn active" onclick="showRecipe('baschi', this)">No.1 バスチー</button>
+    <button class="nav-btn" onclick="showRecipe('cafe-ole', this)">No.2 カフェオレバスチー</button>
+    <button class="nav-btn" onclick="showRecipe('pb', this)">No.3 ピーナッツバターバスチー</button>
+    <button class="nav-btn" onclick="showRecipe('shio-caramel', this)">No.4 塩キャラメルバスチー</button>
+  </nav>
+
+  <!-- No.1 バスチー -->
+  <div id="recipe-baschi">
+
+  <!-- レシピヘッダー -->
+  <div class="recipe-header">
+    <div>
+      <div class="recipe-no">Recipe No. 01</div>
+      <div class="recipe-title">Basque Cheesecake</div>
+      <div class="recipe-title-ja">バスチー</div>
+    </div>
+    <div class="recipe-meta">
+      <div class="meta-item">
+        <span class="meta-label">Category</span>
+        <span class="meta-value">ケーキ</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Yield</span>
+        <span class="meta-value">8カット</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Tin</span>
+        <span class="meta-value">15cm</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 材料 -->
+  <div class="ingredients-section">
+    <div class="section-title">Ingredients</div>
+    <table class="ingredients-table">
+      <thead>
+        <tr>
+          <th>材料</th>
+          <th>分量</th>
+          <th>単位</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>クリームチーズ</td>
+          <td>350</td>
+          <td class="unit">g</td>
+        </tr>
+        <tr>
+          <td>グラニュー糖</td>
+          <td>90</td>
+          <td class="unit">g</td>
+        </tr>
+        <tr>
+          <td>全卵</td>
+          <td>3</td>
+          <td class="unit">玉</td>
+        </tr>
+        <tr>
+          <td>生クリーム</td>
+          <td>200</td>
+          <td class="unit">g</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 手順 -->
+  <div class="steps-section">
+    <div class="section-title">Method</div>
+
+    <div class="step-item">
+      <div class="step-number">01</div>
+      <div class="step-text">クッキングシートを水に濡らしてくしゃくしゃにし、15cmの型に敷き詰める</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">02</div>
+      <div class="step-text">クリームチーズを温めてキッチンエイドで混ぜる</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">03</div>
+      <div class="step-text">滑らかになったらグラニュー糖を加え、溶けるまで混ぜる</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">04</div>
+      <div class="step-text">全卵を加えて混ぜる</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">05</div>
+      <div class="step-text">生クリームを60℃に温めておく</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">06</div>
+      <div class="step-text">卵が混ざったら温めた生クリームを加え、軽く混ぜる</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">07</div>
+      <div class="step-text">ハンドミキサーで約30秒混ぜる</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">08</div>
+      <div class="step-text">気泡が入るのでトントンして気泡を飛ばす</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">09</div>
+      <div class="step-text">型に移す。入れた後もトントンして気泡を取る</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">10</div>
+      <div class="step-text">240℃に予熱したオーブンで22分焼く（2台まで同時に焼ける）</div>
+    </div>
+    <div class="step-item">
+      <div class="step-number">11</div>
+      <div class="step-text">粗熱を取り、冷蔵庫で一晩寝かせる</div>
+    </div>
+  </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        クリームチーズを温めてからオーブンを予熱すること<br>
+        焼き時間は時期によって変わる。焼き色を見て確認すること。揺らして縁の部分は揺れなくて真ん中が揺れるぐらいで完成。
+      </div>
+    </div>
+
+  </div><!-- /recipe-baschi -->
+
+  <!-- No.2 カフェオレバスチー -->
+  <div id="recipe-cafe-ole" style="display:none;">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Recipe No. 02</div>
+        <div class="recipe-title">Café au Lait Basque</div>
+        <div class="recipe-title-ja">カフェオレバスチー</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Category</span>
+          <span class="meta-value">ケーキ</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">8カット</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Tin</span>
+          <span class="meta-value">15cm</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+      <table class="ingredients-table">
+        <thead>
+          <tr><th>材料</th><th>分量</th><th>単位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>クリームチーズ</td><td>300</td><td class="unit">g</td></tr>
+          <tr><td>グラニュー糖</td><td>90</td><td class="unit">g</td></tr>
+          <tr><td>エスプレッソ（ダブル）</td><td>2</td><td class="unit">ショット</td></tr>
+          <tr><td>全卵</td><td>3</td><td class="unit">玉</td></tr>
+          <tr><td>生クリーム</td><td>200</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">クッキングシートを水に濡らしてくしゃくしゃにし、15cmの型に敷き詰める</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">クリームチーズを温めてキッチンエイドで混ぜる</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">滑らかになったらグラニュー糖を加え、溶けるまで混ぜる</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">エスプレッソ（ダブル2ショット）を加えて混ぜる</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">全卵を加えて混ぜる</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">生クリームを60℃に温めておく</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">卵が混ざったら温めた生クリームを加え、軽く混ぜる</div></div>
+      <div class="step-item"><div class="step-number">08</div><div class="step-text">ハンドミキサーで約30秒混ぜる</div></div>
+      <div class="step-item"><div class="step-number">09</div><div class="step-text">気泡が入るのでトントンして気泡を飛ばす</div></div>
+      <div class="step-item"><div class="step-number">10</div><div class="step-text">型に移す。入れた後もトントンして気泡を取る</div></div>
+      <div class="step-item"><div class="step-number">11</div><div class="step-text">240℃に予熱したオーブンで22分焼く（2台まで同時に焼ける）</div></div>
+      <div class="step-item"><div class="step-number">12</div><div class="step-text">粗熱を取り、冷蔵庫で一晩寝かせる</div></div>
+    </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        クリームチーズを温めてからオーブンを予熱すること<br>
+        エスプレッソダブル：豆16g → ショット25g<br>
+        焼き時間は時期によって変わる。焼き色を見て確認すること。揺らして縁の部分は揺れなくて真ん中が揺れるぐらいで完成。
+      </div>
+    </div>
+
+  </div><!-- /recipe-cafe-ole -->
+
+  <!-- No.3 ピーナッツバターバスチー -->
+  <div id="recipe-pb" style="display:none;">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Recipe No. 03</div>
+        <div class="recipe-title">Peanut Butter Basque</div>
+        <div class="recipe-title-ja">ピーナッツバターバスチー</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Category</span>
+          <span class="meta-value">ケーキ</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">8カット</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Tin</span>
+          <span class="meta-value">15cm</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+      <table class="ingredients-table">
+        <thead>
+          <tr><th>材料</th><th>分量</th><th>単位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>クリームチーズ</td><td>300</td><td class="unit">g</td></tr>
+          <tr><td>グラニュー糖</td><td>90</td><td class="unit">g</td></tr>
+          <tr><td>ピーナッツバター</td><td>80</td><td class="unit">g</td></tr>
+          <tr><td>全卵</td><td>3</td><td class="unit">玉</td></tr>
+          <tr><td>生クリーム</td><td>200</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">クッキングシートを水に濡らしてくしゃくしゃにし、15cmの型に敷き詰める</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">クリームチーズを温めてキッチンエイドで混ぜる</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">滑らかになったらグラニュー糖を加え、溶けるまで混ぜる</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">ピーナッツバターを加えて混ぜる</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">全卵を加えて混ぜる</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">生クリームを60℃に温めておく</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">卵が混ざったら温めた生クリームを加え、軽く混ぜる</div></div>
+      <div class="step-item"><div class="step-number">08</div><div class="step-text">ハンドミキサーで約30秒混ぜる</div></div>
+      <div class="step-item"><div class="step-number">09</div><div class="step-text">気泡が入るのでトントンして気泡を飛ばす</div></div>
+      <div class="step-item"><div class="step-number">10</div><div class="step-text">型に移す。入れた後もトントンして気泡を取る</div></div>
+      <div class="step-item"><div class="step-number">11</div><div class="step-text">240℃に予熱したオーブンで22分焼く（2台まで同時に焼ける）</div></div>
+      <div class="step-item"><div class="step-number">12</div><div class="step-text">粗熱を取り、冷蔵庫で一晩寝かせる</div></div>
+    </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        クリームチーズを温めてからオーブンを予熱すること<br>
+        焼き時間は時期によって変わる。焼き色を見て確認すること。揺らして縁の部分は揺れなくて真ん中が揺れるぐらいで完成。
+      </div>
+    </div>
+
+  </div><!-- /recipe-pb -->
+
+  <!-- No.4 塩キャラメルバスチー -->
+  <div id="recipe-shio-caramel" style="display:none;">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Recipe No. 04</div>
+        <div class="recipe-title">Salted Caramel Basque</div>
+        <div class="recipe-title-ja">塩キャラメルバスチー</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Category</span>
+          <span class="meta-value">ケーキ</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">8カット</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Tin</span>
+          <span class="meta-value">15cm</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients — キャラメルソース（自家製）</div>
+      <table class="ingredients-table">
+        <thead>
+          <tr><th>材料</th><th>分量</th><th>単位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>グラニュー糖</td><td>80</td><td class="unit">g</td></tr>
+          <tr><td>生クリーム</td><td>60</td><td class="unit">g</td></tr>
+          <tr><td>バター</td><td>20</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients — 生地</div>
+      <table class="ingredients-table">
+        <thead>
+          <tr><th>材料</th><th>分量</th><th>単位</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>クリームチーズ</td><td>350</td><td class="unit">g</td></tr>
+          <tr><td>グラニュー糖</td><td>90</td><td class="unit">g</td></tr>
+          <tr><td>キャラメルソース（全量）</td><td>—</td><td class="unit"></td></tr>
+          <tr><td>塩</td><td>1</td><td class="unit">g</td></tr>
+          <tr><td>全卵</td><td>3</td><td class="unit">玉</td></tr>
+          <tr><td>生クリーム</td><td>200</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="steps-section">
+      <div class="section-title">Method</div>
+      <div class="step-item"><div class="step-number">01</div><div class="step-text">【キャラメルソース】グラニュー糖80gを鍋で琥珀色になるまで溶かす</div></div>
+      <div class="step-item"><div class="step-number">02</div><div class="step-text">温めておいた生クリーム60gとバター20gを加えてキャラメルソースを作り、冷ましておく</div></div>
+      <div class="step-item"><div class="step-number">03</div><div class="step-text">クッキングシートを水に濡らしてくしゃくしゃにし、15cmの型に敷き詰める</div></div>
+      <div class="step-item"><div class="step-number">04</div><div class="step-text">クリームチーズを温めてキッチンエイドで混ぜる</div></div>
+      <div class="step-item"><div class="step-number">05</div><div class="step-text">滑らかになったらグラニュー糖90gを加え、溶けるまで混ぜる</div></div>
+      <div class="step-item"><div class="step-number">06</div><div class="step-text">キャラメルソース（全量）と塩1gを加えて混ぜる</div></div>
+      <div class="step-item"><div class="step-number">07</div><div class="step-text">全卵を加えて混ぜる</div></div>
+      <div class="step-item"><div class="step-number">08</div><div class="step-text">生クリームを60℃に温めておく</div></div>
+      <div class="step-item"><div class="step-number">09</div><div class="step-text">卵が混ざったら温めた生クリームを加え、軽く混ぜる</div></div>
+      <div class="step-item"><div class="step-number">10</div><div class="step-text">ハンドミキサーで約30秒混ぜる</div></div>
+      <div class="step-item"><div class="step-number">11</div><div class="step-text">気泡が入るのでトントンして気泡を飛ばす</div></div>
+      <div class="step-item"><div class="step-number">12</div><div class="step-text">型に移す。入れた後もトントンして気泡を取る</div></div>
+      <div class="step-item"><div class="step-number">13</div><div class="step-text">240℃に予熱したオーブンで22分焼く（2台まで同時に焼ける）</div></div>
+      <div class="step-item"><div class="step-number">14</div><div class="step-text">粗熱を取り、冷蔵庫で一晩寝かせる</div></div>
+    </div>
+
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        クリームチーズを温めてからオーブンを予熱すること<br>
+        焼き時間は時期によって変わる。焼き色を見て確認すること。揺らして縁の部分は揺れなくて真ん中が揺れるぐらいで完成。
+      </div>
+    </div>
+
+  </div><!-- /recipe-shio-caramel -->
+
+  <script>
+    function showRecipe(id, btn) {
+      document.querySelectorAll('[id^="recipe-"]').forEach(el => el.style.display = 'none');
+      document.getElementById('recipe-' + id).style.display = 'block';
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</div>
+
+<footer>
+  <span class="footer-logo">hano coffee</span>
+  <span class="footer-note">Internal Use Only</span>
+</footer>
+
+</body>
+</html>
