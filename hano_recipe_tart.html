@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>hano coffee — Tart & Pie Recipe</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F8EF;
+    --brown: #2A2E10;
+    --brown-mid: #5A6020;
+    --gold: #8A9A20;
+    --gold-light: #D0DC90;
+    --warm-gray: #7A806A;
+    --line: #C8D0A0;
+    --bg-section: #EDF0DC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'Noto Serif JP', serif;
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--brown);
+    padding: 28px 48px;
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  header .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    color: var(--gold-light);
+  }
+
+  header .slash {
+    color: var(--gold);
+    font-weight: 300;
+  }
+
+  header .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 48px 80px;
+  }
+
+  .recipe-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--warm-gray);
+    background: none;
+    border: 1px solid var(--line);
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  .nav-btn:hover {
+    color: var(--brown-mid);
+    border-color: var(--gold);
+  }
+
+  .nav-btn.active {
+    color: var(--brown);
+    border-color: var(--gold);
+    background: var(--bg-section);
+  }
+
+  .recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .recipe-no {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--warm-gray);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .recipe-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--brown);
+    line-height: 1.1;
+  }
+
+  .recipe-title-ja {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--warm-gray);
+    letter-spacing: 0.15em;
+    margin-top: 6px;
+  }
+
+  .recipe-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: right;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+  }
+
+  .meta-value {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--brown-mid);
+    letter-spacing: 0.05em;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .ingredients-section {
+    margin-bottom: 48px;
+  }
+
+  .ingredient-group-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--warm-gray);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    margin-top: 24px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ingredient-group-label:first-of-type {
+    margin-top: 0;
+  }
+
+  .ingredients-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ingredients-table tr {
+    border-bottom: 1px solid rgba(200,208,160,0.4);
+  }
+
+  .ingredients-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .ingredients-table td {
+    padding: 9px 4px;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--brown);
+  }
+
+  .ingredients-table td:nth-child(2) {
+    text-align: right;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--brown-mid);
+    width: 60px;
+  }
+
+  .ingredients-table td.unit {
+    color: var(--warm-gray);
+    font-size: 12px;
+    padding-left: 6px;
+    width: 80px;
+  }
+
+  .steps-section {
+    margin-bottom: 40px;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(200,208,160,0.4);
+  }
+
+  .step-item:last-child {
+    border-bottom: none;
+  }
+
+  .step-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    padding-top: 2px;
+    min-width: 36px;
+  }
+
+  .step-body {
+    flex: 1;
+    padding-top: 4px;
+  }
+
+  .step-text {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+    color: var(--brown);
+  }
+
+  .step-note {
+    font-size: 12px;
+    color: var(--warm-gray);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+    line-height: 1.7;
+  }
+
+  .memo-section {
+    background: var(--bg-section);
+    border-left: 3px solid var(--gold);
+    padding: 24px 28px;
+    border-radius: 0 4px 4px 0;
+    margin-top: 48px;
+  }
+
+  .memo-section .section-title { margin-bottom: 16px; }
+
+  .memo-content {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    color: var(--brown-mid);
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: var(--warm-gray);
+  }
+
+  footer .footer-note {
+    font-size: 11px;
+    color: var(--line);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 24px; }
+    .container { padding: 36px 24px 60px; }
+    .recipe-header { flex-direction: column; gap: 20px; }
+    .recipe-meta { text-align: left; flex-direction: row; flex-wrap: wrap; }
+    .meta-item { align-items: flex-start; }
+    footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">hano coffee</span>
+  <span class="slash">/</span>
+  <span class="page-title">Tart & Pie Recipe</span>
+</header>
+
+<div class="container">
+
+  <nav class="recipe-nav">
+    <button class="nav-btn active" onclick="showRecipe('lemon', this)">No.1 レモンパイ</button>
+  </nav>
+
+  <!-- No.1 レモンパイ -->
+  <div id="recipe-lemon">
+
+    <div class="recipe-header">
+      <div>
+        <div class="recipe-no">Recipe No.01</div>
+        <div class="recipe-title">Lemon Meringue Pie</div>
+        <div class="recipe-title-ja">レモンパイ</div>
+      </div>
+      <div class="recipe-meta">
+        <div class="meta-item">
+          <span class="meta-label">Category</span>
+          <span class="meta-value">タルト・パイ</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Tin</span>
+          <span class="meta-value">20cm</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Yield</span>
+          <span class="meta-value">8カット</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 材料 -->
+    <div class="ingredients-section">
+      <div class="section-title">Ingredients</div>
+
+      <div class="ingredient-group-label">タルト生地（水なしVer）</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>薄力粉</td><td>200</td><td class="unit">g</td></tr>
+          <tr><td>無塩バター（冷）</td><td>100</td><td class="unit">g</td></tr>
+          <tr><td>粉糖</td><td>40</td><td class="unit">g</td></tr>
+          <tr><td>卵黄</td><td>1</td><td class="unit">個</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">レモンフィリング</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>全卵</td><td>3</td><td class="unit">個（165g前後）</td></tr>
+          <tr><td>砂糖</td><td>135</td><td class="unit">g</td></tr>
+          <tr><td>レモン果汁</td><td>120</td><td class="unit">g</td></tr>
+          <tr><td>レモン皮</td><td>1</td><td class="unit">個分</td></tr>
+          <tr><td>無塩バター</td><td>100</td><td class="unit">g</td></tr>
+          <tr><td>塩</td><td>1</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+
+      <div class="ingredient-group-label">メレンゲ</div>
+      <table class="ingredients-table">
+        <tbody>
+          <tr><td>卵白</td><td>3</td><td class="unit">個分（約90g）</td></tr>
+          <tr><td>砂糖</td><td>120</td><td class="unit">g</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 手順：タルト生地 -->
+    <div class="steps-section">
+      <div class="section-title">Method — タルト生地</div>
+      <div class="step-item">
+        <div class="step-number">01</div>
+        <div class="step-body">
+          <div class="step-text">冷えたバターを薄力粉に擦り込み、砂状にする</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">02</div>
+        <div class="step-body">
+          <div class="step-text">卵黄を加えて押しまとめる</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">03</div>
+        <div class="step-body">
+          <div class="step-text">ラップで円盤状に包み、冷蔵 30分</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">04</div>
+        <div class="step-body">
+          <div class="step-text">3mm に伸ばして型に敷き込み、冷蔵 15分</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">05</div>
+        <div class="step-body">
+          <div class="step-text">170℃ / 17分（重石あり）→ 重石を外してさらに 3〜5分</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">06</div>
+        <div class="step-body">
+          <div class="step-text">防湿処理：焼成直後に溶き全卵を薄く塗り、170℃ で 1分再焼成</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 手順：レモンフィリング -->
+    <div class="steps-section">
+      <div class="section-title">Method — レモンフィリング</div>
+      <div class="step-item">
+        <div class="step-number">01</div>
+        <div class="step-body">
+          <div class="step-text">全材料を湯煎にかけ、80〜85℃ で加熱しながら混ぜる</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">02</div>
+        <div class="step-body">
+          <div class="step-text">ヘラを引いて線が 2秒で戻る粘度になったら火を止める</div>
+          <div class="step-note">＊粘度の目安。引きすぎると過熱になるので注意</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">03</div>
+        <div class="step-body">
+          <div class="step-text">35〜40℃ まで冷ましてから生地に流し込む</div>
+          <div class="step-note">＊熱いまま流すと生地がふやけるので必ず冷ますこと</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">04</div>
+        <div class="step-body">
+          <div class="step-text">冷蔵庫で 1時間冷やす</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 手順：メレンゲ -->
+    <div class="steps-section">
+      <div class="section-title">Method — メレンゲ</div>
+      <div class="step-item">
+        <div class="step-number">01</div>
+        <div class="step-body">
+          <div class="step-text">卵白と砂糖をツヤのある角立ちまで泡立てる</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">02</div>
+        <div class="step-body">
+          <div class="step-text">フィリングの上にドーム状に盛る</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">03</div>
+        <div class="step-body">
+          <div class="step-text">バーナーで表面に焦げ目をつけて完成</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- メモ -->
+    <div class="memo-section">
+      <div class="section-title">Notes</div>
+      <div class="memo-content">
+        当日中に食べきること<br>
+        フィリングは必ず35〜40℃に冷ましてから流す（熱いまま＝生地がふやける）<br>
+        メレンゲは絞り直前に泡立てること
+      </div>
+    </div>
+
+  </div><!-- /recipe-lemon -->
+
+  <script>
+    function showRecipe(id, btn) {
+      document.querySelectorAll('[id^="recipe-"]').forEach(el => el.style.display = 'none');
+      document.getElementById('recipe-' + id).style.display = 'block';
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</div><!-- /container -->
+
+<footer>
+  <span class="footer-logo">hano coffee</span>
+  <span class="footer-note">Internal Use Only</span>
+</footer>
+
+</body>
+</html>
